@@ -1,4 +1,4 @@
-baseurl = "https://www.stromberglabs.com/"
+baseurl = "/"
 title = "Stromberg Labs"
 sidebar = "Projects!"
 theme = "hugo-creative-portfolio-theme"

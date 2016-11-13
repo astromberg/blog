@@ -1,0 +1,18 @@
+<div id="sidebar" class="col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas">
+  <div class="sidebar-content">
+    <h1 class="sidebar-heading"><a href="/">{{ .Site.Title }}</a></h1>
+    <p class="sidebar-p">{{ .Site.Params.sidebar }}</p>
+    <ul class="sidebar-menu">
+      {{ $url := .Site.BaseURL }}
+      {{ range .Site.Params.navlinks }}
+        <li><a href="{{ $url }}{{ .url }}">{{ .name }}</a></li>
+      {{ end }}
+    </ul>
+
+    <div class="copyright">
+      <p class="credit">
+        {{ partial "attribution.html" . }}
+      </p>
+    </div>
+  </div>
+</div>

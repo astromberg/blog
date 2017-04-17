@@ -21,7 +21,3 @@ googleAnalytics = ""
   name = "About"
   url = "about/"
 
-  [[params.navlinks]]
-  name = "Get in touch"
-  url = "contact/"
-

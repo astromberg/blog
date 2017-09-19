@@ -158,20 +158,20 @@ var myChart = new Chart(ctx, {
       {
         label: 'Win',
         data: initData,
-        backgroundColor: ['rgba(41, 160, 59, 0.2)'],
-        borderColor: ['rgba(41, 160, 59, 1)'],
+        backgroundColor: 'rgba(41, 160, 59, 0.2)',
+        borderColor: 'rgba(41, 160, 59, 1)',
         borderWidth: 1
       }, {
         label: 'Loss',
         data: initData,
-        backgroundColor: ['rgba(219, 50, 58, 0.2)'],
-        borderColor: ['rgba(219, 50, 58,1)'],
+        backgroundColor: 'rgba(219, 50, 58, 0.2)',
+        borderColor: 'rgba(219, 50, 58,1)',
         borderWidth: 1
       }, {
         label: 'Tie',
         data: initData,
-        backgroundColor: ['rgba(255, 206, 86, 0.2)'],
-        borderColor: ['rgba(255, 206, 86, 1)'],
+        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+        borderColor: 'rgba(255, 206, 86, 1)',
         borderWidth: 1
       }
     ]

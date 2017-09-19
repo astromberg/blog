@@ -7,6 +7,7 @@ title = "NBA In Game Win Probability"
 weight = 0
 +++
 
+<script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML"></script>
 
 Bear with me for a second. I've get pretty stressed out when watching the Denver Broncos play. Part of my routine involves finding the in game win probability chart so that I know when I should just walk away from the game (good or bad). I also always have trouble finding these charts online, a couple of these sites like Advanced NFL Stats have slowly stopped or broken down over the years. So I figure I should make one myself!
 

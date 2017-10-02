@@ -34,15 +34,12 @@ only a single outcome.
       <div class="col-md-6 text-center">Lead: <span id="lead"></span></div>
     </div>
     <div>
-      <div class="col-md-4 text-center">Win: <span id="percent-win"></span>%</div>
-      <div class="col-md-4 text-center">Tie: <span id="percent-tie"></span>%</div>
       <div class="col-md-4 text-center">Loss: <span id="percent-loss"></span>%</div>
+      <div class="col-md-4 text-center">Tie: <span id="percent-tie"></span>%</div>
+      <div class="col-md-4 text-center">Win: <span id="percent-win"></span>%</div>
     </div>
   </div>
   <input id="slider" type="range"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/7.2.4/decimal.min.js"></script>
-  <script src="/js/igwip_nfl.js"></script>
 </div>
 <div style="margin-bottom: 20px;"></div>
 
@@ -56,7 +53,56 @@ yard line with 10 seconds left, they'll probably kick a field goal and go home.
 Right now this model doesn't account for this, but we can if we included the
 expected number of points for their current drive.
 
-I hope to get to this eventually ;)
+Using the NFL play by play data and some help from my spouse to understand how GLMs work, we derived this formula for expected points given down, distance to goal:
+
+```
+expected points = 3.5263
+    + (yards to goal * -0.0445)
+    + (yards to first down * -0.0471)
+    + (is first down ? 2.0722 : 0)
+    + (is second down ? 1.6599 : 0)
+    + (is third down ? 1.0870 : 0)
+```
+
+You can see how this was derived looking at the [Jupyter notebook file](/nfl_notebook.html) where the data is processed and create a basic GLM. Now this can be incorporated as a mu offset in the original graph.
+
+<select id="game-picker-with-points">
+  <option value="1">WAS vs CIN, 10/30/2016 (Tie Game)</option>
+  <option value="0">MIN vs CLE, 9/13/2009 (Just a Game)</option>
+  <option value="2">BAL vs MIN, 12/8/2013 (Wild Last Two Minutes)</option>
+  <option value="3">DET vs PHI, 12/8/2013 (Snow Bowl!)</option>
+</select>
+
+<div>
+  <canvas id="chart-with-points"></canvas>
+  <div style="color: #999999;">
+    <div style="margin-top: 10px;">
+      <div class="col-md-4 text-center">Possessor: <span id="possessor"></span></div>
+      <div class="col-md-4 text-center"><span id="game-time-with-points"></span></div>
+      <div class="col-md-4 text-center">Lead: <span id="lead-with-points"></span></div>
+    </div>
+    <div>
+      <div class="col-md-4 text-center">Down: <span id="down"></span></div>
+      <div class="col-md-4 text-center">Yards To First: <span id="yards-to-first"></span></div>
+      <div class="col-md-4 text-center">Yards To Goal: <span id="yards-to-goal"></span></div>
+    </div>
+    <div>
+      <div class="col-md-4 text-center">Loss: <span id="percent-loss-with-points"></span>%</div>
+      <div class="col-md-4 text-center">Tie: <span id="percent-tie-with-points"></span>%</div>
+      <div class="col-md-4 text-center">Win: <span id="percent-win-with-points"></span>%</div>
+    </div>
+    <div>
+      <div class="col-md-12 text-center">Expected Points: <span id="expected-points"></span></div>
+    </div>
+  </div>
+  <input id="slider-with-points" type="range"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/7.2.4/decimal.min.js"></script>
+  <script src="/js/igwip_nfl.js"></script>
+</div>
+<div style="margin-bottom: 20px;"></div>
+
+I hope I got all my pluses and minuses straight, generally what you are looking at is the win probability for the home team and the expected number of points for the home team, so if they are in a bad situation like 4th down at their own 1 yard line, it will be negative. Similarly it will be generally negative if the opposing team has the ball and is near the goal line.
 
 ## Additional Reading
 

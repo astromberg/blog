@@ -9,7 +9,7 @@ weight = 0
 
 ### Sleep Book
 
-Not as common now, but I read the "Sleep Book" by Dr. Seuss. On one page there is a line about a machine that listens and looks into everyone's home. It's supposed to be on a mountain halfway between Reno and Rome. I was kind of curious if this place actually exists. The midpoint for the short way and the long way are both in the ocean, but there are other cities named Reno and Rome, not just the ones in Nevada and Italy.
+I used to read "Sleep Book" by Dr. Seuss a lot. On one page there is a line about a machine that listens and looks into everyone's home on a mountain halfway between Reno and Rome. I was kind of curious if this place actually exists. The midpoint for the short way and the long way are both in the ocean, but there are other cities named Reno and Rome, not just the ones in Nevada and Italy.
 
 <iframe src="/midpoints_map.html" style="width: 100%; height: 500px; border: none;"></iframe>
 
@@ -33,7 +33,7 @@ So which midpoint is closest to being on a mountain? I queried an elevation API 
     <tr><td>1</td><td>Nevada</td><td>Wisconsin</td><td>5,200 ft</td><td>Eastern Wyoming</td></tr>
     <tr><td>2</td><td>Nevada</td><td>Georgia</td><td>3,694 ft</td><td>Western Kansas</td></tr>
     <tr><td>3</td><td>Nevada</td><td>Ohio</td><td>3,012 ft</td><td>Nebraska</td></tr>
-    <tr><td>4</td><td>Ohio</td><td>Georgia</td><td>2,306 ft</td><td>Kentucky/Tennessee border</td></tr>
+    <tr><td>4</td><td>Ohio</td><td>Georgia</td><td>2,306 ft</td><td>Kentucky / Tennessee border</td></tr>
     <tr><td>5</td><td>Ohio</td><td>New York</td><td>1,972 ft</td><td>Northern Pennsylvania</td></tr>
   </tbody>
 </table>

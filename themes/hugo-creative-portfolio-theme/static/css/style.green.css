@@ -382,9 +382,6 @@ SIDEBAR + RIGHT COLUMN
 .sidebar-menu li:hover:before {
   color: #2b7551;
 }
-.content-column {
-  padding-top: 40px;
-}
 .content-column.white-background {
   background: #fff;
   min-height: 100vh;
@@ -409,7 +406,7 @@ SIDEBAR + RIGHT COLUMN
 }
 .content-column-content p,
 .content-column-content li {
-  color: #999999;
+  color: black;
 }
 .content-column-content ul li {
   list-style-type: none;
@@ -577,89 +574,6 @@ SIGN UP FORM
 /*
 
 =====================
-SOCIAL LINKS
-=====================
-
-*/
-.contact-form {
-  margin-bottom: 20px;
-}
-p.social {
-  margin-top: 20px;
-}
-p.social a {
-  margin: 0 10px 10px 0;
-  color: #fff;
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
-  line-height: 40px;
-  font-size: 15px;
-  text-align: center;
-  vertical-align: bottom;
-  border: solid 1px #999999;
-  color: #999999;
-  -webkit-transition: all 0.2s ease-out;
-  -moz-transition: all 0.2s ease-out;
-  transition: all 0.2s ease-out;
-  /*
-             &.facebook {background-color: #4460ae; border-color: #4460ae;}
-             &.gplus {background-color: #c21f25; border-color: #c21f25;}
-             &.twitter {background-color: #3cf; border-color: #3cf;}
-             &.instagram {background-color: #cd4378; border-color: #cd4378;}
-             &.email {background-color: #4a7f45; border-color: #4a7f45;}
-             &.link {background-color: #871AFF; border-color: #871AFF;}
-             */
-}
-p.social a:hover {
-  color: #2b7551;
-  border-color: #2b7551;
-}
-p.social a i {
-  vertical-align: bottom;
-  line-height: 40px;
-}
-p.social.social--outline a {
-  background: transparent;
-}
-p.social.social--outline a.facebook {
-  color: #4460ae;
-  border-color: #4460ae;
-}
-p.social.social--outline a.gplus {
-  color: #c21f25;
-  border-color: #c21f25;
-}
-p.social.social--outline a.twitter {
-  color: #3cf;
-  border-color: #3cf;
-}
-p.social.social--outline a.instagram {
-  color: #cd4378;
-  border-color: #cd4378;
-}
-p.social.social--outline a.email {
-  color: #4a7f45;
-  border-color: #4a7f45;
-}
-p.social.social--outline a.link {
-  color: #871AFF;
-  border-color: #871AFF;
-}
-p.social.social--big a {
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  line-height: 60px;
-  font-size: 25px;
-}
-p.social.social--big i {
-  line-height: 60px;
-}
-/*
-
-=====================
 COPYRIGHT
 =====================
 
@@ -707,81 +621,6 @@ MAIN PORTFOLIO SLIDER
 #main-slider .owl-controls .owl-page.active span,
 #main-slider .owl-controls.clickable .owl-page:hover span {
   background: #2b7551;
-}
-/*
-
-=====================
-ABOUT
-=====================
-
-*/
-.progress-title {
-  text-align: left;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #999999;
-  font-size: 12px;
-}
-.progress-bar-skill1 {
-  background-color: #d1d1d1;
-  background-color: #4abc85;
-}
-.progress-striped .progress-bar-skill1 {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.progress-striped .progress-bar-skill1 {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.progress-bar-skill2 {
-  background-color: #c8c7c7;
-  background-color: #40ad78;
-}
-.progress-striped .progress-bar-skill2 {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.progress-striped .progress-bar-skill2 {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.progress-bar-skill3 {
-  background-color: #bdbdbd;
-  background-color: #399a6b;
-}
-.progress-striped .progress-bar-skill3 {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.progress-striped .progress-bar-skill3 {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.progress-bar-skill4 {
-  background-color: #b3b2b2;
-  background-color: #32885e;
-}
-.progress-striped .progress-bar-skill4 {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.progress-striped .progress-bar-skill4 {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.progress-bar-skill5 {
-  background-color: #a9a8a8;
-  background-color: #2b7551;
-}
-.progress-striped .progress-bar-skill5 {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.progress-striped .progress-bar-skill5 {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 /*
 
@@ -1211,36 +1050,6 @@ a:active {
   -ms-transform: translate(0, 100%);
   transform: translate(0, 100%);
 }
-/*
-
-=====================
-STYLE SWITCHER FOR DEMO
-=====================
-
-*/
-#style-switch-button {
-  position: fixed;
-  bottom: 200px;
-  left: 0px;
-  border-radius: 0;
-  z-index: 2;
-}
-#style-switch {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  width: 300px;
-  padding: 20px;
-  position: fixed;
-  bottom: 240px;
-  left: 0;
-  background: #fff;
-  border: solid 1px #cdcdcd;
-  z-index: 2000;
-}
-#style-switch h4 {
-  color: #555555;
-}
 /* ========================================= */
 /* THEMING OF BOOTSTRAP COMPONENTS           */
 /* ========================================= */
@@ -1611,7 +1420,7 @@ body {
   background-color: #f4f4f4;
 }
 a {
-  color: #2b7551;
+  color: black;
   text-decoration: none;
 }
 a:hover,
@@ -1972,7 +1781,7 @@ h6,
   font-family: "Roboto", Helvetica, Arial, sans-serif;
   font-weight: 700;
   line-height: 1.2;
-  color: #555555;
+  color: black;
 }
 h1,
 .h1 {

@@ -383,9 +383,6 @@ SIDEBAR + RIGHT COLUMN
 .sidebar-menu li:hover:before {
   color: #ef5285;
 }
-.content-column {
-  padding-top: 40px;
-}
 .content-column.white-background {
   background: #fff;
   min-height: 100vh;

@@ -4,8 +4,7 @@
 <body>
   <div id="all">
       <div class="container-fluid">
-          <div class="row row-offcanvas row-offcanvas-left">
-              {{ partial "sidebar.html" . }}
+          <div class="row">
               {{ block "main" . }}
               {{ end }}
           </div>

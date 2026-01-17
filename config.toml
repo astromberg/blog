@@ -3,8 +3,6 @@ title = "Stromberg Labs"
 sidebar = "Projects!"
 theme = "hugo-creative-portfolio-theme"
 languageCode = "en-us"
-# Enable Google Analytics by entering your tracking code
-googleAnalytics = ""
 
 [params]
   # Style options: default (pink), blue, green, pink, red, sea, violet
@@ -21,3 +19,7 @@ googleAnalytics = ""
   name = "About"
   url = "about/"
 
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

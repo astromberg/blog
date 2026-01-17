@@ -1,1 +1,0 @@
-I'm just a person, doing things.

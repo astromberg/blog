@@ -1,8 +1,10 @@
 {{ define "main" }}
-<div class="col-xs-12 col-sm-8 col-md-9 content-column white-background">
-  {{ partial "mobileNavToggle.html" . }}
+<div class="col-xs-12 content-column white-background">
+  <div class="site-header">
+      <h1><a href="/">{{ .Site.Title }}</a></h1>
+  </div>
   <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-8 col-lg-offset-2">
       <div class="content-column-content">
          <h1>{{ .Title }}</h1>
          {{ .Content }}

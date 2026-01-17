@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halfway Between Reno and Rome - Dr. Seuss Sleep Book</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        #header {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #e94560;
+        }
+        #header h1 {
+            font-size: 2em;
+            color: #c23a52;
+            margin-bottom: 10px;
+        }
+        #map {
+            height: calc(100vh - 55px);
+            width: 100%;
+        }
+        #legend {
+            background: #ffffff;
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            border-top: 2px solid #ddd;
+            height: 55px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #333;
+        }
+        .legend-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+        .legend-x {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .legend-line {
+            width: 30px;
+            height: 4px;
+        }
+        .reno-color { background: #0088cc; }
+        .rome-color { background: #cc4444; }
+        .midpoint-primary { color: #cc8800; }
+        .midpoint-secondary { color: #7744aa; }
+        .line-short { background: #22aa55; }
+        .line-long { background: #dd6622; }
+
+        .x-marker {
+            font-weight: bold;
+            text-align: center;
+            line-height: 1;
+            text-shadow:
+                -1px -1px 0 #fff,
+                1px -1px 0 #fff,
+                -1px 1px 0 #fff,
+                1px 1px 0 #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="legend">
+        <div class="legend-item"><div class="legend-dot reno-color"></div> Reno Cities</div>
+        <div class="legend-item"><div class="legend-dot rome-color"></div> Rome Cities</div>
+        <div class="legend-item"><span class="legend-x midpoint-primary">X</span>  Reno NV to Rome Italy Midpoint</div>
+        <div class="legend-item"><span class="legend-x midpoint-secondary">X</span> Other Midpoints</div>
+        <div class="legend-item"><div class="legend-line line-short"></div> Short Route</div>
+        <div class="legend-item"><div class="legend-line" style="background:#dd6622;background-image:repeating-linear-gradient(90deg,#dd6622 0,#dd6622 6px,transparent 6px,transparent 10px);"></div> Long Route</div>
+    </div>
+
+    <script>
+        // Cities named Reno
+        const renos = [
+            { name: "Reno, Nevada, USA", lat: 39.5296, lng: -119.8138, primary: true },
+            { name: "Reno, Texas, USA", lat: 33.6634, lng: -95.4619 },
+            { name: "Reno, Ohio, USA", lat: 39.3737, lng: -81.3979 },
+            { name: "Reno, Pennsylvania, USA", lat: 41.3167, lng: -79.7000 },
+            { name: "El Reno, Oklahoma, USA", lat: 35.5323, lng: -97.9550 },
+        ];
+
+        // Cities named Rome
+        const romes = [
+            { name: "Rome, Italy", lat: 41.9028, lng: 12.4964, primary: true },
+            { name: "Rome, Georgia, USA", lat: 34.2570, lng: -85.1647 },
+            { name: "Rome, New York, USA", lat: 43.2128, lng: -75.4557 },
+            { name: "Rome, Wisconsin, USA", lat: 44.2208, lng: -89.8068 },
+            { name: "Rome, Maine, USA", lat: 44.5851, lng: -69.8695 },
+            { name: "Rome, Ohio, USA", lat: 41.6006, lng: -80.8876 },
+            { name: "Rome, Pennsylvania, USA", lat: 41.8573, lng: -76.3469 },
+        ];
+
+        // Calculate midpoint on a great circle (short route)
+        function getMidpoint(lat1, lng1, lat2, lng2) {
+            const toRad = deg => deg * Math.PI / 180;
+            const toDeg = rad => rad * 180 / Math.PI;
+
+            const φ1 = toRad(lat1), λ1 = toRad(lng1);
+            const φ2 = toRad(lat2), λ2 = toRad(lng2);
+
+            const Bx = Math.cos(φ2) * Math.cos(λ2 - λ1);
+            const By = Math.cos(φ2) * Math.sin(λ2 - λ1);
+
+            const φ3 = Math.atan2(
+                Math.sin(φ1) + Math.sin(φ2),
+                Math.sqrt((Math.cos(φ1) + Bx) ** 2 + By ** 2)
+            );
+            const λ3 = λ1 + Math.atan2(By, Math.cos(φ1) + Bx);
+
+            return { lat: toDeg(φ3), lng: toDeg(λ3) };
+        }
+
+        // Calculate antipodal midpoint (long route - goes the other way around)
+        function getAntipodalMidpoint(lat1, lng1, lat2, lng2) {
+            const shortMid = getMidpoint(lat1, lng1, lat2, lng2);
+            return {
+                lat: -shortMid.lat,
+                lng: shortMid.lng > 0 ? shortMid.lng - 180 : shortMid.lng + 180
+            };
+        }
+
+        // Generate points along a great circle arc
+        function getGreatCircleArc(lat1, lng1, lat2, lng2, numPoints = 100) {
+            const toRad = deg => deg * Math.PI / 180;
+            const toDeg = rad => rad * 180 / Math.PI;
+
+            const points = [];
+            const φ1 = toRad(lat1), λ1 = toRad(lng1);
+            const φ2 = toRad(lat2), λ2 = toRad(lng2);
+
+            const d = Math.acos(
+                Math.sin(φ1) * Math.sin(φ2) +
+                Math.cos(φ1) * Math.cos(φ2) * Math.cos(λ2 - λ1)
+            );
+
+            for (let i = 0; i <= numPoints; i++) {
+                const f = i / numPoints;
+                const A = Math.sin((1 - f) * d) / Math.sin(d);
+                const B = Math.sin(f * d) / Math.sin(d);
+
+                const x = A * Math.cos(φ1) * Math.cos(λ1) + B * Math.cos(φ2) * Math.cos(λ2);
+                const y = A * Math.cos(φ1) * Math.sin(λ1) + B * Math.cos(φ2) * Math.sin(λ2);
+                const z = A * Math.sin(φ1) + B * Math.sin(φ2);
+
+                const φ = Math.atan2(z, Math.sqrt(x * x + y * y));
+                const λ = Math.atan2(y, x);
+
+                points.push([toDeg(φ), toDeg(λ)]);
+            }
+
+            return points;
+        }
+
+        // Handle dateline crossing for polylines
+        function addArcWithDatelineFix(points, color, layer, dashed = false) {
+            let segment = [];
+            const style = { color, weight: 2, opacity: 0.7 };
+            if (dashed) style.dashArray = '8, 6';
+
+            for (let i = 0; i < points.length; i++) {
+                if (i > 0) {
+                    const prevLng = points[i-1][1];
+                    const currLng = points[i][1];
+                    if (Math.abs(currLng - prevLng) > 180) {
+                        if (segment.length > 1) {
+                            L.polyline(segment, style).addTo(layer);
+                        }
+                        segment = [];
+                    }
+                }
+                segment.push(points[i]);
+            }
+            if (segment.length > 1) {
+                L.polyline(segment, style).addTo(layer);
+            }
+        }
+
+        // Initialize map with light theme
+        const map = L.map('map').setView([30, -30], 2);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap contributors © CARTO',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Custom icons for cities
+        const renoIcon = L.divIcon({
+            className: 'custom-icon',
+            html: '<div style="background:#0088cc;width:12px;height:12px;border-radius:50%;border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>',
+            iconSize: [12, 12]
+        });
+
+        const renoPrimaryIcon = L.divIcon({
+            className: 'custom-icon',
+            html: '<div style="background:#0088cc;width:18px;height:18px;border-radius:50%;border:3px solid #ffd700;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>',
+            iconSize: [18, 18]
+        });
+
+        const romeIcon = L.divIcon({
+            className: 'custom-icon',
+            html: '<div style="background:#cc4444;width:12px;height:12px;border-radius:50%;border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>',
+            iconSize: [12, 12]
+        });
+
+        const romePrimaryIcon = L.divIcon({
+            className: 'custom-icon',
+            html: '<div style="background:#cc4444;width:18px;height:18px;border-radius:50%;border:3px solid #ffd700;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>',
+            iconSize: [18, 18]
+        });
+
+        // X marker icons for midpoints
+        function createXIcon(color, size, isPrimary = false) {
+            const shadow = isPrimary ? 'text-shadow: 0 0 8px ' + color + ', -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;' :
+                                       'text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;';
+            return L.divIcon({
+                className: 'x-marker',
+                html: `<div style="color:${color};font-size:${size}px;font-weight:bold;${shadow}">X</div>`,
+                iconSize: [size, size],
+                iconAnchor: [size/2, size/2]
+            });
+        }
+
+        // Layer groups for toggling - organized by type
+        const renoCitiesLayer = L.layerGroup().addTo(map);
+        const romeCitiesLayer = L.layerGroup().addTo(map);
+        const shortMidpointsLayer = L.layerGroup().addTo(map);
+        const longMidpointsLayer = L.layerGroup().addTo(map);
+        const shortLinesLayer = L.layerGroup().addTo(map);
+        const longLinesLayer = L.layerGroup().addTo(map);
+        const primaryOnlyLayer = L.layerGroup(); // Not added by default
+
+        // Add Reno markers
+        renos.forEach(reno => {
+            const icon = reno.primary ? renoPrimaryIcon : renoIcon;
+            const marker = L.marker([reno.lat, reno.lng], { icon })
+                .bindPopup(`<b>${reno.name}</b><br>Lat: ${reno.lat.toFixed(4)}<br>Lng: ${reno.lng.toFixed(4)}`);
+            marker.addTo(renoCitiesLayer);
+            if (reno.primary) marker.addTo(primaryOnlyLayer);
+        });
+
+        // Add Rome markers
+        romes.forEach(rome => {
+            const icon = rome.primary ? romePrimaryIcon : romeIcon;
+            const marker = L.marker([rome.lat, rome.lng], { icon })
+                .bindPopup(`<b>${rome.name}</b><br>Lat: ${rome.lat.toFixed(4)}<br>Lng: ${rome.lng.toFixed(4)}`);
+            marker.addTo(romeCitiesLayer);
+            if (rome.primary) marker.addTo(primaryOnlyLayer);
+        });
+
+        // Helper to add arcs to a layer
+        function addArcToLayer(points, color, layer, dashed = false) {
+            let segment = [];
+            const style = { color, weight: 2, opacity: 0.7 };
+            if (dashed) style.dashArray = '8, 6';
+
+            for (let i = 0; i < points.length; i++) {
+                if (i > 0) {
+                    const prevLng = points[i-1][1];
+                    const currLng = points[i][1];
+                    if (Math.abs(currLng - prevLng) > 180) {
+                        if (segment.length > 1) {
+                            L.polyline(segment, style).addTo(layer);
+                        }
+                        segment = [];
+                    }
+                }
+                segment.push(points[i]);
+            }
+            if (segment.length > 1) {
+                L.polyline(segment, style).addTo(layer);
+            }
+        }
+
+        // Calculate and display all midpoints with their connecting lines
+        renos.forEach(reno => {
+            romes.forEach(rome => {
+                const isPrimary = reno.primary && rome.primary;
+
+                // Colors based on primary/secondary
+                const shortLineColor = isPrimary ? '#22aa55' : '#66bb77';
+                const longLineColor = isPrimary ? '#dd6622' : '#ee9966';
+                const shortXColor = isPrimary ? '#cc8800' : '#7744aa';
+                const longXColor = isPrimary ? '#dd6622' : '#9966aa';
+
+                // Short route midpoint and line
+                const shortMid = getMidpoint(reno.lat, reno.lng, rome.lat, rome.lng);
+                const shortArc = getGreatCircleArc(reno.lat, reno.lng, rome.lat, rome.lng, 100);
+
+                // Add short route line
+                addArcToLayer(shortArc, shortLineColor, shortLinesLayer, false);
+
+                // Add short route X midpoint
+                const shortXIcon = createXIcon(shortXColor, isPrimary ? 24 : 16, isPrimary);
+                const shortMarker = L.marker([shortMid.lat, shortMid.lng], { icon: shortXIcon })
+                    .bindPopup(`<b>Midpoint (Short Route)</b><br>${reno.name} ↔ ${rome.name}<br>Lat: ${shortMid.lat.toFixed(4)}<br>Lng: ${shortMid.lng.toFixed(4)}`);
+                shortMarker.addTo(shortMidpointsLayer);
+
+                // Long route midpoint and line
+                const longMid = getAntipodalMidpoint(reno.lat, reno.lng, rome.lat, rome.lng);
+
+                // Long route arcs (through the antipodal midpoint)
+                const longArc1 = getGreatCircleArc(reno.lat, reno.lng, longMid.lat, longMid.lng, 50);
+                const longArc2 = getGreatCircleArc(longMid.lat, longMid.lng, rome.lat, rome.lng, 50);
+
+                addArcToLayer(longArc1, longLineColor, longLinesLayer, true);
+                addArcToLayer(longArc2, longLineColor, longLinesLayer, true);
+
+                // Add long route X midpoint
+                const longXIcon = createXIcon(longXColor, isPrimary ? 24 : 16, isPrimary);
+                const longMarker = L.marker([longMid.lat, longMid.lng], { icon: longXIcon })
+                    .bindPopup(`<b>Midpoint (Long Route)</b><br>${reno.name} ↔ ${rome.name}<br>Lat: ${longMid.lat.toFixed(4)}<br>Lng: ${longMid.lng.toFixed(4)}<br><em>Going the long way around!</em>`);
+                longMarker.addTo(longMidpointsLayer);
+            });
+        });
+
+        // Layer control with organized groups
+        const overlays = {
+            "Reno Cities": renoCitiesLayer,
+            "Rome Cities": romeCitiesLayer,
+            "Short Route Midpoints (X)": shortMidpointsLayer,
+            "Long Route Midpoints (X)": longMidpointsLayer,
+            "Short Route Lines": shortLinesLayer,
+            "Long Route Lines": longLinesLayer
+        };
+        L.control.layers(null, overlays, { collapsed: false }).addTo(map);
+    </script>
+</body>
+</html>
